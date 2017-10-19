@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { OwnerComponent }     from './owner/owner.component';
 import { RepoComponent }      from './repo/repo.component';
 import { PageComponent }      from './page/page.component';
 
@@ -12,15 +11,11 @@ const routes: Routes = [
     component: DashboardComponent
   },
   {
-    path: ':owner',
-    component: OwnerComponent
-  },
-  {
-    path: ':owner/:repo',
+    path: ':repo',
     component: RepoComponent
   },
   {
-    path: ':owner/:repo/episodes/:path',
+    path: ':repo/episodes/:path',
     component: PageComponent
   },
   {

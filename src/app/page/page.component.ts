@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../api.service';
+import { app } from '../app.setting';
 import { RubyPipe } from '../ruby.pipe';
 
 @Component({
@@ -11,11 +12,11 @@ import { RubyPipe } from '../ruby.pipe';
 })
 export class PageComponent implements OnInit {
 
-  content: string;
-  index;
-  owner: string;
-  repo: string;
-  path: string;
+  repo;
+  content;
+  episodes;
+  prev;
+  next;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,33 +26,44 @@ export class PageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.owner = this.route.snapshot.paramMap.get('owner');
-    this.repo = this.route.snapshot.paramMap.get('repo');
-    this.path = this.route.snapshot.paramMap.get('path');
+    let _repo = this.route.snapshot.paramMap.get('repo');
+    let _path = this.route.snapshot.paramMap.get('path');
     Observable.forkJoin(
-      this.api.getContents(this.owner, this.repo, 'episodes/' + this.path),
-      this.api.getIndex(this.owner, this.repo)
+      this.api.getRepo(_repo),
+      this.api.getContents(_repo, app.episodedir + '/' + _path),
+      this.api.getEpisodes(_repo)
     ).subscribe(
-      ([content, index]) => {
+      ([repo, content, episodes]) => {
+        this.repo    = repo;
         this.content = content;
-        this.index = index;
+        this.episodes   = episodes;
         this.setHeader();
+        this.setPagination(_path);
       }
     );
-    this.setHeader();
   }
   
+  setPagination(current): void {
+console.log(this.episodes);
+    this.episodes.forEach((episode, index) => {
+      if (episode.name == current) {
+        this.prev = this.episodes[index - 1] ? this.episodes[index - 1].name : null;
+        this.next = this.episodes[index + 1] ? this.episodes[index + 1].name : null;
+      }
+    });
+  }
+
   setHeader(): void {
-    this.title.setTitle('Novels at 8am.');
+    this.title.setTitle(app.title);
     this.meta.addTags([
-      { name: 'description', content: '足羽川永都(8amjp)が執筆した小説を公開しています。'},
-      { name: 'twitter:card', content: 'summary'},
-      { name: 'twitter:site', content: '@8amjp'},
-      { property: 'og:title', content: 'Novels at 8am.'},
-      { property: 'og:description', content: '足羽川永都(8amjp)が執筆した小説を公開しています。'},
-      { property: 'og:url', content: 'https://8amjp.github.io/'},
-      { property: 'og:type', content: 'novel'},
-      { property: 'og:image', content: 'site-icon.png'},
+      { name: 'description', content: app.description },
+      { name: 'twitter:card', content: app.twitter.card },
+      { name: 'twitter:site', content: app.twitter.site },
+      { property: 'og:title', content: app.title },
+      { property: 'og:description', content: app.description },
+      { property: 'og:url', content: app.og.url },
+      { property: 'og:type', content: app.og.type },
+      { property: 'og:image', content: app.og.image },
     ]);
   }
 

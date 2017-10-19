@@ -6,9 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent }       from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { OwnerComponent }     from './owner/owner.component';
 import { RepoComponent }      from './repo/repo.component';
 import { PageComponent }      from './page/page.component';
+import { ModalComponent }     from './modal/modal.component';
 
 import { ApiService } from './api.service';
 
@@ -21,13 +21,13 @@ import { RubyPipe } from './ruby.pipe';
   declarations: [
     AppComponent,
     DashboardComponent,
-    OwnerComponent,
     RepoComponent,
     PageComponent,
     FilterPipe,
     TitlePipe,
     PropertiesPipe,
     RubyPipe,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

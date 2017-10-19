@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../api.service';
+import { app } from '../app.setting';
 
 @Component({
   templateUrl: './repo.component.html',
@@ -10,10 +11,9 @@ import { ApiService } from '../api.service';
 })
 export class RepoComponent implements OnInit {
   
-  content: string;
-  index;
-  owner: string;
-  repo: string;
+  repo;
+  content;
+  episodes;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,31 +23,32 @@ export class RepoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.owner = this.route.snapshot.paramMap.get('owner');
-    this.repo = this.route.snapshot.paramMap.get('repo');
+    let _repo = this.route.snapshot.paramMap.get('repo');
     Observable.forkJoin(
-      this.api.getReadMe(this.owner, this.repo),
-      this.api.getIndex(this.owner, this.repo)
+      this.api.getRepo(_repo),
+      this.api.getReadMe(_repo),
+      this.api.getEpisodes(_repo)
     ).subscribe(
-      ([content, index]) => {
-        this.content = content;
-        this.index = index;
+      ([repo, content, episodes]) => {
+        this.repo     = repo;
+        this.content  = content;
+        this.episodes = episodes;
         this.setHeader();
       }
     );
   }
   
   setHeader(): void {
-    this.title.setTitle('Novels at 8am.');
+    this.title.setTitle(`${this.repo.description} | ${app.title}`);
     this.meta.addTags([
-      { name: 'description', content: '足羽川永都(8amjp)が執筆した小説を公開しています。'},
-      { name: 'twitter:card', content: 'summary'},
-      { name: 'twitter:site', content: '@8amjp'},
-      { property: 'og:title', content: 'Novels at 8am.'},
-      { property: 'og:description', content: '足羽川永都(8amjp)が執筆した小説を公開しています。'},
-      { property: 'og:url', content: 'https://8amjp.github.io/'},
-      { property: 'og:type', content: 'novel'},
-      { property: 'og:image', content: 'site-icon.png'},
+      { name: 'description', content: app.description },
+      { name: 'twitter:card', content: app.twitter.card },
+      { name: 'twitter:site', content: app.twitter.site },
+      { property: 'og:title', content: app.title },
+      { property: 'og:description', content: app.description },
+      { property: 'og:url', content: app.og.url },
+      { property: 'og:type', content: app.og.type },
+      { property: 'og:image', content: app.og.image },
     ]);
   }
 

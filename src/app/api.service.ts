@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/rx';
+import { app } from './app.setting';
 
 @Injectable()
 export class ApiService {
@@ -10,30 +11,37 @@ export class ApiService {
   constructor(private http: Http) {
   }
 
-  getRepos(owner:string) {
+  getRepos() {
     return this.http
-      .get(`https://api.github.com/users/${owner}/repos?sort=pushed`)
+      .get(`https://api.github.com/orgs/${app.org}/repos?sort=pushed`)
       .map(response => response.json())
       .catch(this.handleError);
   }
 
-  getReadMe(owner:string, repo:string) {
+  getRepo(repo:string) {
     return this.http
-      .get(`https://api.github.com/repos/${owner}/${repo}/readme`, { headers: this.headers })
+      .get(`https://api.github.com/repos/${app.org}/${repo}`)
+      .map(response => response.json())
+      .catch(this.handleError);
+  }
+
+  getReadMe(repo:string) {
+    return this.http
+      .get(`https://api.github.com/repos/${app.org}/${repo}/readme`, { headers: this.headers })
       .map(response => response.text())
       .catch(this.handleError);
   }
 
-  getIndex(owner:string, repo:string) {
+  getEpisodes(repo:string) {
     return this.http
-      .get(`https://api.github.com/repos/${owner}/${repo}/contents/episodes`)
+      .get(`https://api.github.com/repos/${app.org}/${repo}/contents/${app.episodedir}`)
       .map(response => response.json())
       .catch(this.handleError);
   }
 
-  getContents(owner:string, repo:string, path:string) {
+  getContents(repo:string, path:string) {
     return this.http
-      .get(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, { headers: this.headers })
+      .get(`https://api.github.com/repos/${app.org}/${repo}/contents/${path}`, { headers: this.headers })
       .map(response => response.text())
       .catch(this.handleError);
   }
