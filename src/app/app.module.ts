@@ -1,38 +1,42 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from "@angular/http";
+import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { AppComponent }       from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { RepoComponent }      from './repo/repo.component';
-import { PageComponent }      from './page/page.component';
-import { ModalComponent }     from './modal/modal.component';
+import { AppComponent } from './app.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { RepoComponent } from './pages/repo/repo.component';
+import { PageComponent } from './pages/page/page.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
-import { ApiService } from './api.service';
+import { ApiService } from './services/api.service';
 
-import { FilterPipe }     from './filter.pipe';
-import { TitlePipe }      from './title.pipe';
-import { PropertiesPipe } from './properties.pipe';
-import { RubyPipe } from './ruby.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
+import { TitlePipe } from './pipes/title.pipe';
+import { PropertiesPipe } from './pipes/properties.pipe';
+import { RubyPipe } from './pipes/ruby.pipe';
+import { InternallinkPipe } from './pipes/internallink.pipe';
 
 @NgModule({
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    NgbModule.forRoot(),
+    AppRoutingModule,
+  ],
   declarations: [
     AppComponent,
     DashboardComponent,
     RepoComponent,
     PageComponent,
+    NavbarComponent,
     FilterPipe,
     TitlePipe,
     PropertiesPipe,
     RubyPipe,
-    ModalComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpModule,
-    AppRoutingModule,
+    InternallinkPipe,
   ],
   providers: [
     ApiService,

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { ApiService } from '../api.service';
-import { app } from '../app.setting';
+
+import { ApiService } from '../../services/api.service';
+import { app } from '../../app.setting';
 
 @Component({
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
 
@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
     );
     this.setHeader();
   }
-  
+
   setHeader(): void {
     this.title.setTitle(app.title);
     this.meta.addTags([

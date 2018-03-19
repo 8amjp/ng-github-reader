@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { ApiService } from './api.service';
+
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',

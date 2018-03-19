@@ -1,8 +1,0 @@
-<nav class="navbar sticky-top navbar-expand-xl navbar-light bg-white justify-content-between">
-  <a [routerLink]="['/']" class="button">&lt;</a>
-  <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modal">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</nav>
-<div class="container" [innerHTML]="content" *ngIf="content"></div>
-<app-modal [repo]="repo" [episodes]="episodes"></app-modal>

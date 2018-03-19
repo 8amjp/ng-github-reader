@@ -1,18 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Rx';
-import { ApiService } from '../api.service';
-import { app } from '../app.setting';
+import { Observable } from 'rxjs/Observable';
+
+import { ApiService } from '../../services/api.service';
+import { app } from '../../app.setting';
 
 @Component({
   templateUrl: './repo.component.html',
   styleUrls: ['./repo.component.css']
 })
 export class RepoComponent implements OnInit {
-  
+
   repo;
-  content;
+  content: string;
   episodes;
 
   constructor(
@@ -20,10 +21,14 @@ export class RepoComponent implements OnInit {
     private title: Title,
     private meta: Meta,
     private api: ApiService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    let _repo = this.route.snapshot.paramMap.get('repo');
+    let _repo;
+    this.route.params.subscribe(params => {
+      _repo = params.repo;
+    });
     Observable.forkJoin(
       this.api.getRepo(_repo),
       this.api.getReadMe(_repo),
@@ -37,7 +42,7 @@ export class RepoComponent implements OnInit {
       }
     );
   }
-  
+
   setHeader(): void {
     this.title.setTitle(`${this.repo.description} | ${app.title}`);
     this.meta.addTags([

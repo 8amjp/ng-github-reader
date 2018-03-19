@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Rx';
-import { ApiService } from '../api.service';
-import { app } from '../app.setting';
-import { RubyPipe } from '../ruby.pipe';
+import { Observable } from 'rxjs/Observable';
+
+import { ApiService } from '../../services/api.service';
+import { app } from '../../app.setting';
+import { RubyPipe } from '../../pipes/ruby.pipe';
 
 @Component({
   templateUrl: './page.component.html',
@@ -42,7 +43,7 @@ export class PageComponent implements OnInit {
       }
     );
   }
-  
+
   setPagination(current): void {
 console.log(this.episodes);
     this.episodes.forEach((episode, index) => {
